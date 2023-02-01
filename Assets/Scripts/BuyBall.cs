@@ -1,3 +1,4 @@
+using GameAnalyticsSDK;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -45,6 +46,7 @@ public class BuyBall : MonoBehaviour
     {
         if(PlayerPrefs.GetInt("Coins", 0) >= Coins)
         {
+            GameAnalytics.NewDesignEvent("ButtonClickedEvents:BallSelectionScreen:BuyWithCoinsButton");
             PlayerPrefs.SetInt("Coins", PlayerPrefs.GetInt("Coins", 0) - Coins);
             PlayerPrefs.SetString("BallNo" + BallId.ToString(), "true");
             MainMenu.instance.AssignCoins();
@@ -70,6 +72,7 @@ public class BuyBall : MonoBehaviour
 
     public void BuyWithAds()
     {
+        GameAnalytics.NewDesignEvent("ButtonClickedEvents:BallSelectionScreen:BuyWithAdsButton");
         UnityAdsManager.Instance.GetFreeBall(this.gameObject);
     }
     public void AdCompleted()

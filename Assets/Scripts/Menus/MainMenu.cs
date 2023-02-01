@@ -1,3 +1,4 @@
+using GameAnalyticsSDK;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -56,7 +57,7 @@ public class MainMenu : MonoBehaviour
     }
     public void TapToPlay()
     {
-       
+        GameAnalytics.NewDesignEvent("ButtonClickedEvents:MainMenuScreen:TapToPlayClick");
         MenuHandler.Instance.StartLevelPlay();
         SoundsManager.instance.GamePlaySounds();
     }

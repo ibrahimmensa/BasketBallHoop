@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.Advertisements;
 using UnityEngine;
+using GameAnalyticsSDK;
 
 public enum RewardedAdType
 {
@@ -27,11 +28,14 @@ public class UnityAdsManager : Singleton<UnityAdsManager>, IUnityAdsInitializati
     string _adUnitId = null; // This will remain null for unsupported platforms
     string _adUnitIdInterstitial = null;
     GameObject currentBallObject;
-    void Awake()
+    new void Awake()
     {
-            InitializeAds();
+        InitializeAds();
     }
-    
+    private void Start()
+    {
+        
+    }
     public void InitializeAds()
     {
         _gameId = (Application.platform == RuntimePlatform.IPhonePlayer)
@@ -47,6 +51,7 @@ public class UnityAdsManager : Singleton<UnityAdsManager>, IUnityAdsInitializati
         _adUnitIdInterstitial = (Application.platform == RuntimePlatform.IPhonePlayer)
             ? _iOsAdUnitIdInterstitial
             : _androidAdUnitIdInterstitial;
+
     }
 
     public void TRUEBOOL()
@@ -56,11 +61,10 @@ public class UnityAdsManager : Singleton<UnityAdsManager>, IUnityAdsInitializati
     #region RewardedAd
     public void OnInitializationComplete()
     {
+        Debug.Log("Unity Ads initialization complete.");
         if (PlayerPrefs.GetInt("NoAds",0)==0)
         {
-            Debug.Log("Unity Ads initialization complete.");
-            LoadAd();
-           // LoadAdInterstitial();
+            LoadAdInterstitial();
             if (rewardAds == true)
             {
                 rewardAds = false;
@@ -69,7 +73,7 @@ public class UnityAdsManager : Singleton<UnityAdsManager>, IUnityAdsInitializati
                 
             }
         }
-       
+        LoadAd();
     }
    
     //public void BuyAds()
@@ -113,6 +117,7 @@ public class UnityAdsManager : Singleton<UnityAdsManager>, IUnityAdsInitializati
     }
     public void GetFreeCoins()
     {
+        GameAnalytics.NewDesignEvent("ButtonClickedEvents:MainMenuScreen:FreeCoinsByAdButton");
         ShowAd(RewardedAdType.FREECOINS);
         Debug.Log("Reward Testing Button CLicked");
     }
@@ -141,6 +146,7 @@ public class UnityAdsManager : Singleton<UnityAdsManager>, IUnityAdsInitializati
     // Implement the Show Listener's OnUnityAdsShowComplete callback method to determine if the user gets a reward:
     public void OnUnityAdsShowComplete(string adUnitId, UnityAdsShowCompletionState showCompletionState)
     {
+        Debug.Log("Unity Ads Rewarded Ad Completed outtt");
         if (adUnitId.Equals(_adUnitId) && showCompletionState.Equals(UnityAdsShowCompletionState.COMPLETED))
         {
             Debug.Log("Unity Ads Rewarded Ad Completed");

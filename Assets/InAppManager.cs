@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Purchasing;
 using System.IO;
+using GameAnalyticsSDK;
 
 public class InAppManager : MonoBehaviour
 {
@@ -72,13 +73,16 @@ public class InAppManager : MonoBehaviour
     {
         if(startDisabling)
         {
-            Debug.Log("Entered receipt");
-            Product product = CodelessIAPStoreListener.Instance.StoreController.products.WithID(Remove_Ads);
-            if (product.hasReceipt)
+            if (CodelessIAPStoreListener.Instance.StoreController != null)
             {
-                NoadsButton.SetActive(false);
-                PlayerPrefs.SetInt("NoAds", 1);
-                AdsManagerRef.GetComponent<AdmobAdsManager>().DestroyBanner();
+                Debug.Log("Entered receipt");
+                Product product = CodelessIAPStoreListener.Instance.StoreController.products.WithID(Remove_Ads);
+                if (product.hasReceipt)
+                {
+                    NoadsButton.SetActive(false);
+                    PlayerPrefs.SetInt("NoAds", 1);
+                    AdsManagerRef.GetComponent<AdmobAdsManager>().DestroyBanner();
+                }
             }
         }
         if (PlayerPrefs.GetInt("NoAds", 0) == 1)
@@ -91,23 +95,28 @@ public class InAppManager : MonoBehaviour
     {
         if(product.definition.id.ToString()== Remove_Ads)
         {
+            GameAnalytics.NewDesignEvent("ButtonClickedEvents:ShopScreen:RemoveAdsIAPButton");
             Ads();
         }
 
         if (product.definition.id.ToString() == Coins500)
         {
+            GameAnalytics.NewDesignEvent("ButtonClickedEvents:ShopScreen:BuyCoinsIAPButton");
             CoinsBTN();
         }
         if (product.definition.id.ToString() == Coins1500)
         {
+            GameAnalytics.NewDesignEvent("ButtonClickedEvents:ShopScreen:BuyCoinsIAPButton");
             CoinsBTNtwo();
         }
         if (product.definition.id.ToString() == Coins5000)
         {
+            GameAnalytics.NewDesignEvent("ButtonClickedEvents:ShopScreen:BuyCoinsIAPButton");
             CoinsBTNthree();
         }
         if (product.definition.id.ToString() == Coins7000)
         {
+            GameAnalytics.NewDesignEvent("ButtonClickedEvents:ShopScreen:BuyCoinsIAPButton");
             CoinsBTNFour();
         }
         //if (product.definition.id.ToString() == Coins10000)

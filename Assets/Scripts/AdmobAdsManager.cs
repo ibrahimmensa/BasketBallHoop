@@ -8,7 +8,7 @@ using System.IO;
 public class AdmobAdsManager : MonoBehaviour
 {
     private BannerView bannerView;
-    private List<BannerView> BVLIST;
+    //private List<BannerView> BVLIST;
 
     // Start is called before the first frame update
     void Start()
@@ -38,7 +38,7 @@ public class AdmobAdsManager : MonoBehaviour
         {
             // Create a 320x50 banner at the top of the screen.
             this.bannerView = new BannerView(adUnitId, AdSize.Banner, AdPosition.Top);
-            BVLIST.Add(bannerView);
+            //BVLIST.Add(bannerView);
 
             AdRequest request = new AdRequest.Builder().Build();
 
@@ -48,6 +48,7 @@ public class AdmobAdsManager : MonoBehaviour
     }
     public void DestroyBanner()
     {
-        bannerView.Hide();
+        if(bannerView!=null)
+            bannerView.Hide();
     }
 }

@@ -1,3 +1,4 @@
+using GameAnalyticsSDK;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -147,9 +148,10 @@ public class PlayerController : MonoBehaviour
     }
     public void FinishFunc()
     {
-       
+
         //gameObject.SetActive(false);
         //gameObject.GetComponent<HingeJoint2D>().breakForce = 2;
+        GameAnalytics.NewProgressionEvent(GAProgressionStatus.Complete, "Level_" + LevelHandler.Instance.CurrentLevel, "Level_Progress");
         StartCoroutine("FinishdelayRoutine");
     }
     private void OnTriggerEnter2D(Collider2D collision)
@@ -223,7 +225,8 @@ public class PlayerController : MonoBehaviour
         if (collision.transform.tag == "Ground")
         {
             SoundsManager.instance.StartVibration();
-            
+
+            GameAnalytics.NewProgressionEvent(GAProgressionStatus.Fail, "Level_" + LevelHandler.Instance.CurrentLevel, "Level_Progress");
             StartCoroutine("levelFailedDelay");
 
         }
@@ -304,6 +307,7 @@ public class PlayerController : MonoBehaviour
 
     public void LevelFailed()
     {
+        GameAnalytics.NewProgressionEvent(GAProgressionStatus.Fail, "Level_" + LevelHandler.Instance.CurrentLevel, "Level_Progress");
         StartCoroutine("levelFailedDelay");
     }
 

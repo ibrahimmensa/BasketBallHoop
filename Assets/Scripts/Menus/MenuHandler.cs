@@ -1,3 +1,4 @@
+using GameAnalyticsSDK;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,9 +24,11 @@ public class MenuHandler : Singleton<MenuHandler>
         LevelHandler.Instance.Levels[LevelHandler.Instance.CurrentLevel].GetComponent<LevelData>().EnablePlayeratStart();
         mainMenu.SetActive(false);
         GamePlay.SetActive(true);
+        GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, "Level_" + LevelHandler.Instance.CurrentLevel, "Level_Progress");
     }
     public void ReturnToHome()
     {
+        GameAnalytics.NewDesignEvent("ButtonClickedEvents:PauseScreen:BackToMainMenuButton");
         LevelHandler.Instance.ResetLevelData();
         mainMenu.SetActive(true);
         GamePlay.SetActive(false);
@@ -34,6 +37,7 @@ public class MenuHandler : Singleton<MenuHandler>
     }
     public void RestartLevel()
     {
+        GameAnalytics.NewDesignEvent("ButtonClickedEvents:PauseScreen:RestartButton");
         ResumeGame();
         //PlayerController.instance.StartCoroutine("levelFailedDelay");
         PlayerController.instance.ball = 0;
@@ -44,11 +48,13 @@ public class MenuHandler : Singleton<MenuHandler>
     }
     public void ResumeGame()
     {
+        GameAnalytics.NewDesignEvent("ButtonClickedEvents:PauseScreen:ResumeButton");
         GamePasued = false;
         LevelHandler.instance.ResumeLevel();
     }
     public void PauseGame()
     {
+        GameAnalytics.NewDesignEvent("ButtonClickedEvents:GameplayScreen:PauseButton");
         GamePasued = true;
         LevelHandler.instance.PauseLevel();
     }
